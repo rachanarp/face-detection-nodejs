@@ -125,7 +125,7 @@ app.post('/upload', upload.single('file'), function(req, res, next){
             dst        :   dst
           }
         ).then(function(image) {
-
+          this.fileHeight = image.height;
           return callback();
 
         });
@@ -151,15 +151,63 @@ app.post('/upload', upload.single('file'), function(req, res, next){
     ],
     function( err, faces ) {
 
-      var minTop = 0;
-      for (var i=0; i<faces.length; ++i) {
+      var topOfTop = 99999;
+      var bottomOfBottom = 0;
+      for (var i = 0; i < faces.length; i++) {
         var face = faces[i];
-        if (i == 0) {
-          minTop = face["y"];
-        } else if (face["y"] < minTop) {
-          minTop = face["y"];
+        topOfTop = Math.min(topOfTop, face.y);
+        bottomOfBottom = Math.max(bottomOfBottom, face.y + face.height);
+      }
+
+
+      var windowSize = this.fileHeight / 3 || 400;
+      var bestTopHeight = 0;
+      var bestScore = 0;
+      for (var i = 0; i < (this.fileHeight - windowSize); i+=10) {
+        var myScore = 0;
+        var windowTop = i;
+        var windowBottom = i + windowSize;
+        for (var f = 0; f < faces.length; f++) {
+          var face = faces[f];
+          var myTop = face.y;
+          var myBottom = face.y + face.height;
+          if (myBottom < windowTop) {
+            // above range
+          } else if (myTop > windowBottom) {
+            // below range
+          } else if (myTop > windowTop && myBottom < windowBottom) {
+            // totally inside
+            myScore += face.height;
+            var centeredness = Math.abs((windowBottom - myBottom) - (myTop - windowTop)) + 1;
+            myScore += 2 / centeredness;
+          } else if (myTop < windowTop && myBottom > windowBottom) {
+            // bigger than window
+            myScore += windowSize;
+          } else if (myTop < windowTop) {
+            // partially off top
+            myScore += (myBottom - windowTop);
+          } else {
+            // partially off bottom
+            myScore += (windowBottom - myBottom);
+          }
+        }
+        if (myScore > bestScore) {
+          bestScore = myScore;
+          bestTopHeight = i;
         }
       }
+      var minTop = bestTopHeight;
+
+      // var minTop = 0;
+
+      // for (var i=0; i<faces.length; ++i) {
+      //   var face = faces[i];
+      //   if (i == 0) {
+      //     minTop = face["y"];
+      //   } else if (face["y"] < minTop) {
+      //     minTop = face["y"];
+      //   }
+      // }
 
 
       /**
