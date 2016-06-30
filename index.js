@@ -163,7 +163,7 @@ app.post('/upload', upload.single('file'), function(req, res, next){
       var windowSize = this.fileHeight / 3 || 400;
       var bestTopHeight = 0;
       var bestScore = 0;
-      for (var i = 0; i < (this.fileHeight - windowSize); i+=5) {
+      for (var i = 0; i < (this.fileHeight - windowSize); i+=1) {
         var myScore = 0;
         var windowTop = i;
         var windowBottom = i + windowSize;
