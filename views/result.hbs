@@ -2,7 +2,7 @@
   <div class="alert alert-success" role="alert">
     I found <strong>{{faces.length}}</strong> face(s).
     {{#each faces}}
-      [width: {{ width }}px; height: {{ height }}px; left: {{ x }}px; top: {{ y }}px] 
+      [width: {{ width }}px; height: {{ height }}px; left: {{ x }}px; top: {{ y }}px]
     {{/each}}
   </div>
   {{else}}
@@ -23,15 +23,15 @@
 
 <div class="frameFace">
 <h2>Current Version</h2>
-<div class="HeaderBg" style="background-image:url(/images/{{ filename }}); 
+<div class="HeaderBg" style="background-image:url(/images/{{ filename }});
       background-position: 50%;">
   </div>
 </div>
 
 <div class="frameFace">
 <h2>Face Detection Version</h2>
-<div class="HeaderBg" style="background-image:url(/images/{{ filename }}); 
-      background-position-y: -{{ minTop }}px;">
+<div class="HeaderBg" style="background-image:url(/images/{{ filename }});
+      background-position-y: {{ minTop }};">
   </div>
 </div>
 

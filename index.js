@@ -163,7 +163,7 @@ app.post('/upload', upload.single('file'), function(req, res, next){
       var windowSize = this.fileHeight / 3 || 400;
       var bestTopHeight = 0;
       var bestScore = 0;
-      for (var i = 0; i < (this.fileHeight - windowSize); i+=10) {
+      for (var i = 0; i < (this.fileHeight - windowSize); i+=5) {
         var myScore = 0;
         var windowTop = i;
         var windowBottom = i + windowSize;
@@ -196,7 +196,7 @@ app.post('/upload', upload.single('file'), function(req, res, next){
           bestTopHeight = i;
         }
       }
-      var minTop = bestTopHeight;
+      var minTop = bestTopHeight || '50%';
 
       // var minTop = 0;
 
@@ -232,7 +232,7 @@ app.post('/upload', upload.single('file'), function(req, res, next){
         {
           filename   :   filename,
           faces     :   faces,
-          minTop : minTop
+          minTop : minTop.indexOf('%') === -1 ? ('-' + minTop + 'px') : minTop
         }
       );
 
