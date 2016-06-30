@@ -178,11 +178,15 @@ app.post('/upload', upload.single('file'), function(req, res, next){
           } else if (myTop > windowTop && myBottom < windowBottom) {
             // totally inside
             myScore += face.height;
+            // bonus for centeredness
             var centeredness = Math.abs((windowBottom - myBottom) - (myTop - windowTop)) + 1;
-            myScore += 2 / centeredness;
+            myScore += face.height / centeredness;
           } else if (myTop < windowTop && myBottom > windowBottom) {
             // bigger than window
             myScore += windowSize;
+            // bonus for centeredness
+            var centeredness = Math.abs((myBottom - windowBottom) - (windowTop - myTop)) + 1;
+            myScore += face.height / centeredness;
           } else if (myTop < windowTop) {
             // partially off top
             myScore += (myBottom - windowTop);
