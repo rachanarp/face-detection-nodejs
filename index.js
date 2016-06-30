@@ -232,7 +232,7 @@ app.post('/upload', upload.single('file'), function(req, res, next){
         {
           filename   :   filename,
           faces     :   faces,
-          minTop : minTop.indexOf('%') === -1 ? ('-' + minTop + 'px') : minTop
+          minTop : minTop.toString().indexOf('%') === -1 ? ('-' + minTop + 'px') : minTop
         }
       );
 
